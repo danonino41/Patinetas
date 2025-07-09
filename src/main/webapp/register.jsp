@@ -13,13 +13,13 @@
     <body>
         <div class="register-container">
             <h2>Crear Cuenta</h2>
-            <% String error=(String) request.getAttribute("error"); if (error !=null) { %>
-                <div class="error-message">
-                    <%= error%>
-                </div>
+                <% String error=(String) request.getAttribute("error"); if (error !=null) { %>
+                    <div class="error-message">
+                        <%= error%>
+                    </div>
                 <% }%>
 
-                    <form method="POST" action="srv">
+                    <form action="register" method="POST">
                         <label for="nombre">Nombre:</label>
                         <input type="text" name="nombre" id="nombre" required
                             placeholder="Introduce tu nombre completo" />
@@ -29,8 +29,12 @@
                             placeholder="Introduce tu correo electrónico" />
 
                         <label for="contraseña">Password</label>
-                        <input type="password" class="form-control" id="contrasena" name="contrasena"
-                            placeholder="Contraseña">
+                        <input type="password" class="form-control" id="contraseña" name="contraseña"
+                            placeholder="Contraseña" required>
+                        
+                        <label for="confirmarContraseña">Password</label>
+                        <input type="password" class="form-control" id="confirmarContraseña" name="confirmarContraseña"
+                            placeholder="Contraseña" required>
 
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="mostrarContrasena">
@@ -46,13 +50,16 @@
         </div>
 
         <script>
-            const passwordInput = document.getElementById('contrasena');
+            const passwordInput = document.getElementById('contraseña');
+            const confirmPassowrdInput = document.getElementById('confirmarContraseña');
             const mostrarCheckbox = document.getElementById('mostrarContrasena');
             mostrarCheckbox.addEventListener('change', function () {
                 if (this.checked) {
                     passwordInput.type = 'text';
+                    confirmPassowrdInput.type = 'text';
                 } else {
                     passwordInput.type = 'password';
+                    confirmPassowrdInput.type = 'password';
                 }
             });
         </script>

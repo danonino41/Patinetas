@@ -1,1 +1,17 @@
+com\mycompany\patinetas\models\Categoria.class
+com\mycompany\patinetas\dao\UsuarioDAO.class
+com\mycompany\patinetas\servlets\LogoutServlet.class
+com\mycompany\patinetas\servlets\RegisterServlet.class
+com\mycompany\patinetas\util\PasswordUtil.class
+com\mycompany\patinetas\util\EmailService$1.class
+com\mycompany\patinetas\filter\AuthFilter.class
 com\mycompany\patinetas\loginsrv.class
+com\mycompany\patinetas\servlets\ResetPasswordServlet.class
+com\mycompany\patinetas\models\Detalle_venta.class
+com\mycompany\patinetas\servlets\ForgotPasswordServlet.class
+com\mycompany\patinetas\servlets\LoginServlet.class
+com\mycompany\patinetas\util\DatabaseConnection.class
+com\mycompany\patinetas\models\Venta.class
+com\mycompany\patinetas\util\EmailService.class
+com\mycompany\patinetas\models\Producto.class
+com\mycompany\patinetas\models\Usuario.class

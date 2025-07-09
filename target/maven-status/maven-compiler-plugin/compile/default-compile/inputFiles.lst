@@ -1,1 +1,16 @@
-C:\Users\Dan\Downloads\patinetas\src\main\java\com\mycompany\patinetas\loginsrv.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\filter\AuthFilter.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\util\PasswordUtil.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\models\Venta.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\dao\UsuarioDAO.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\loginsrv.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\servlets\ForgotPasswordServlet.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\util\EmailService.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\servlets\ResetPasswordServlet.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\models\Producto.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\servlets\LogoutServlet.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\servlets\RegisterServlet.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\util\DatabaseConnection.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\servlets\LoginServlet.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\models\Categoria.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\models\Detalle_venta.java
+C:\Users\PC\Desktop\Repositorios\Patinetas\src\main\java\com\mycompany\patinetas\models\Usuario.java
