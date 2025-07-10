@@ -31,7 +31,7 @@ public class AuthFilter implements Filter {
         boolean loggedIn = (session != null && session.getAttribute("usuario") != null);
         
         if (!loggedIn) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
             return;
         }
         

@@ -26,7 +26,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/forgot-password.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/forgot-password.jsp").forward(request, response);
     }
 
     @Override
@@ -50,11 +50,11 @@ public class ForgotPasswordServlet extends HttpServlet {
             
             // Mostrar mismo mensaje aunque el email no exista (por seguridad)
             request.setAttribute("success", "Si el email existe en nuestro sistema, recibirás un enlace para restablecer tu contraseña");
-            request.getRequestDispatcher("/forgot-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/forgot-password.jsp").forward(request, response);
             
         } catch (Exception e) {
             request.setAttribute("error", "Ocurrió un error al procesar tu solicitud");
-            request.getRequestDispatcher("/forgot-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/forgot-password.jsp").forward(request, response);
         }
     }
     

@@ -1,17 +1,19 @@
 package com.mycompany.patinetas.models;
 
+import java.math.BigDecimal;
+
 public class Producto {
     private int id;
     private String nombre;
     private String descripcion;
-    private Double precio;
+    private BigDecimal precio;
     private int stock;
     private String imagen;
     private int categoriaId;
     private int proveedorId;
 
     // Constructores
-    public Producto(String nombre, String descripcion, Double precio, int stock, String imagen, int categoriaId, int proveedorId) {
+    public Producto(String nombre, String descripcion, BigDecimal precio, int stock, String imagen, int categoriaId, int proveedorId) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -49,11 +51,11 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public Double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 

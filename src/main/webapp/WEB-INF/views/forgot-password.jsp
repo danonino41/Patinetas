@@ -34,7 +34,7 @@
                             <button type="submit" class="btn btn-primary w-100">Enviar enlace de recuperación</button>
                         </form>
                         <div class="mt-3 text-center">
-                            <a href="login.jsp">Volver al inicio de sesión</a>
+                            <a href="login">Volver al inicio de sesión</a>
                         </div>
                     </div>
                 </div>

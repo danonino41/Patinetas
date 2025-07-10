@@ -45,7 +45,7 @@
                     </form>
 
                     <div class="login-link">
-                        <p>Ya tienes cuenta? <a href="login.jsp">Iniciar sesión</a></p>
+                        <p>Ya tienes cuenta? <a href="login">Iniciar sesión</a></p>
                     </div>
         </div>
 

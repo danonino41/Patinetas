@@ -1,23 +1,27 @@
 package com.mycompany.patinetas.models;
 
-public class Detalle_venta {
+import java.math.BigDecimal;
+
+public class DetalleVenta {
     private int id;
-    private Venta venta;
-    private Producto producto;
+    private int ventaId;
+    private int productoId;
     private int cantidad;
-    private Double subtotal;
+    private BigDecimal subtotal;
 
-    public Detalle_venta(int cantidad, int id, Producto producto, Double subtotal, Venta venta) {
-        this.cantidad = cantidad;
+    // Constructores
+    public DetalleVenta(int id, int ventaId, int productoId, int cantidad, BigDecimal subtotal) {
         this.id = id;
-        this.producto = producto;
+        this.ventaId = ventaId;
+        this.productoId = productoId;
+        this.cantidad = cantidad;
         this.subtotal = subtotal;
-        this.venta = venta;
     }
 
-    public Detalle_venta() {
+    public DetalleVenta() {
     }
 
+    // Getters y setter
     public int getId() {
         return id;
     }
@@ -26,20 +30,20 @@ public class Detalle_venta {
         this.id = id;
     }
 
-    public Venta getVenta() {
-        return venta;
+    public int getVentaId() {
+        return ventaId;
     }
 
-    public void setVenta(Venta venta) {
-        this.venta = venta;
+    public void setVentaId(int ventaId) {
+        this.ventaId = ventaId;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public int getProductoId() {
+        return productoId;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProductoId(int productoId) {
+        this.productoId = productoId;
     }
 
     public int getCantidad() {
@@ -50,14 +54,14 @@ public class Detalle_venta {
         this.cantidad = cantidad;
     }
 
-    public Double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
-
+    
 
     
 }

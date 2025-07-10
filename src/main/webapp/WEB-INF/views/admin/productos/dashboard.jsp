@@ -1,7 +1,7 @@
 <%-- 
-    Document   : productos
-    Created on : 8 jul. 2025, 9:52:23 a. m.
-    Author     : Dan
+    Document   : dashboard
+    Created on : 9 jul. 2025, 13:40:28
+    Author     : PC
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

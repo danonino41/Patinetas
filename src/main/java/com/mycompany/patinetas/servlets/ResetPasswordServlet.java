@@ -33,12 +33,12 @@ public class ResetPasswordServlet extends HttpServlet {
         
         if (usuario == null) {
             request.setAttribute("error", "El enlace de recuperación no es válido o ha expirado");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             return;
         }
         
         request.setAttribute("token", token);
-        request.getRequestDispatcher("reset-password.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/reset-password.jsp").forward(request, response);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ResetPasswordServlet extends HttpServlet {
         if (!nuevaContraseña.equals(confirmarContraseña)) {
             request.setAttribute("error", "Las contraseñas no coinciden");
             request.setAttribute("token", token);
-            request.getRequestDispatcher("reset-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/reset-password.jsp").forward(request, response);
             return;
         }
         
@@ -60,7 +60,7 @@ public class ResetPasswordServlet extends HttpServlet {
             request.setAttribute("error", 
                 "La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales");
             request.setAttribute("token", token);
-            request.getRequestDispatcher("reset-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/reset-password.jsp").forward(request, response);
             return;
         }
         
@@ -68,10 +68,10 @@ public class ResetPasswordServlet extends HttpServlet {
         
         if (usuario != null && usuarioDAO.actualizarContraseña(usuario.getId(), nuevaContraseña)) {
             request.setAttribute("success", "¡Contraseña actualizada correctamente! Por favor inicia sesión");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "No se pudo actualizar la contraseña. El enlace puede haber expirado");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
     }
     

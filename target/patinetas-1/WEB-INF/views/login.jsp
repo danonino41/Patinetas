@@ -37,11 +37,11 @@
                     </form>
 
                     <div class="register-link">
-                        <p>No tienes cuenta? <a href="register.jsp">Registrarse</a></p>
+                        <p>No tienes cuenta? <a href="register">Registrarse</a></p>
                     </div>
                 
                     <div class="register-link">
-                        <a href="forgot-password.jsp">¿Olvidaste tu contraseña?</a>
+                        <a href="forgot-password">¿Olvidaste tu contraseña?</a>
                     </div>
         </div>
         <script>

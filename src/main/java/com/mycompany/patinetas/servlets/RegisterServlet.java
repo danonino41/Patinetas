@@ -22,7 +22,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
     }
 
     @Override
@@ -40,26 +40,26 @@ public class RegisterServlet extends HttpServlet {
             contraseña == null || contraseña.trim().isEmpty() ||
             confirmarContraseña == null || confirmarContraseña.trim().isEmpty()) {
             request.setAttribute("error", "Todos los datos son requeridos");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
                 
         if (!contraseña.equals(confirmarContraseña)) {
             request.setAttribute("error", "Las contraseñas no coinciden");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
         
         if (usuarioDAO.existeEmail(email)) {
             request.setAttribute("error", "El email ya está registrado");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
         
         if (!esContraseñaFuerte(contraseña)) {
             request.setAttribute("error", 
                 "La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
         
@@ -67,10 +67,11 @@ public class RegisterServlet extends HttpServlet {
         Usuario nuevoUsuario = new Usuario(nombre, email, contraseña, "usuario");
         
         if (usuarioDAO.registrarUsuario(nuevoUsuario)) {
-            response.sendRedirect("login.jsp?registro=exitoso");
+            request.setAttribute("success", "Usuario registrado exitosamente");
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Error al registrar el usuario");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
         }
     }
     

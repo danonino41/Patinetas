@@ -1,16 +1,20 @@
 package com.mycompany.patinetas.models;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Venta {
     private int id;
-    private Usuario usuario;
-    private Date fecha;
-    private Double total;
+    private int usuarioId;
+    private LocalDateTime fecha;
+    private BigDecimal total;
     
-    public Venta(int id, Usuario usuario, Date fecha, Double total) {
+    // Constructores
+    public Venta(int id, int usuarioId, LocalDateTime fecha, BigDecimal total) {
         this.id = id;
-        this.usuario = usuario;
+        this.usuarioId = usuarioId;
         this.fecha = fecha;
         this.total = total;
     }
@@ -18,6 +22,7 @@ public class Venta {
     public Venta() {
     }
 
+    // Getters y setters
     public int getId() {
         return id;
     }
@@ -26,30 +31,28 @@ public class Venta {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
-    
-
     
 }

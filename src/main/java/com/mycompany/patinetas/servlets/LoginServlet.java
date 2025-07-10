@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         if (email == null || email.trim().isEmpty() || 
             contraseña == null || contraseña.trim().isEmpty()) {
             request.setAttribute("error", "Email y contraseña son requeridos");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("login").forward(request, response);
             return;
         }
         
@@ -52,17 +52,17 @@ public class LoginServlet extends HttpServlet {
             // Redirigir según el rol
             switch (usuario.getRol()) {
                 case "admin":
-                    response.sendRedirect(contextPath + "/admin/dashboard.jsp");
+                    response.sendRedirect(contextPath + "/admin/dashboard");
                     break;
                 case "vendedor":
                     response.sendRedirect(contextPath + "/vendedor/dashboard.jsp");
                     break;
                 default:
-                    response.sendRedirect(contextPath + "/cliente/dashboard.jsp");
+                    response.sendRedirect(contextPath + "/home");
             }
         } else {
             request.setAttribute("error", "Email o contraseña incorrectos");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
     }
     
