@@ -28,11 +28,11 @@
                         <input type="email" name="email" id="email" required
                             placeholder="Introduce tu correo electrónico" />
 
-                        <label for="contraseña">Password</label>
+                        <label for="contraseña">Contraseña</label>
                         <input type="password" class="form-control" id="contraseña" name="contraseña"
                             placeholder="Contraseña" required>
                         
-                        <label for="confirmarContraseña">Password</label>
+                        <label for="confirmarContraseña">Confirmar Contraseña</label>
                         <input type="password" class="form-control" id="confirmarContraseña" name="confirmarContraseña"
                             placeholder="Contraseña" required>
 
