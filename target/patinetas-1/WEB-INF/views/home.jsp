@@ -95,7 +95,7 @@
                     <div class="container">
                         <h2 class="text-center mb-5">Ofertas Especiales</h2>
 
-                        <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                             <c:forEach items="${productosOferta}" var="producto">
                                 <div class="col">
                                     <div class="card h-100 card-producto">
