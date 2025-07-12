@@ -76,6 +76,10 @@
                 <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
                 <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
             </div>
+            <div class="col-md-4">
+                <h5>Metodos de Pago</h5>
+                <img src="https://patinesperu.com/wp-content/themes/woodmart/images/payments.png" alt="alt"/>
+            </div>
         </div>
     </div>
 </footer>
