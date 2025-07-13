@@ -11,6 +11,7 @@ public class Producto {
     private String imagen;
     private int categoriaId;
     private int proveedorId;
+    private String categoriaNombre;
 
     // Constructores
     public Producto(String nombre, String descripcion, BigDecimal precio, int stock, String imagen, int categoriaId, int proveedorId) {
@@ -91,5 +92,14 @@ public class Producto {
         this.proveedorId = proveedorId;
     }
 
+    public String getCategoriaNombre() {
+        return categoriaNombre;
+    }
+
+    public void setCategoriaNombre(String categoriaNombre) {
+        this.categoriaNombre = categoriaNombre;
+    }
+
+    
 
 }

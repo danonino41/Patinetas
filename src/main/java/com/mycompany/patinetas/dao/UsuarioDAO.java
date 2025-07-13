@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import com.mycompany.patinetas.models.Usuario;
 import com.mycompany.patinetas.util.DatabaseConnection;
 import com.mycompany.patinetas.util.PasswordUtil;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,6 +119,26 @@ public class UsuarioDAO {
         }
     }
     
+    public Usuario obtenerPorId(int id) throws SQLException {
+        String sql = "SELECT id, nombre, email, rol FROM usuario WHERE id = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setId(rs.getInt("id"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setRol(rs.getString("rol"));
+                    return usuario;
+                }
+            }
+        }
+        return null;
+    }
+    
     public boolean guardarResetToken(int usuarioId, String token) {
         String sql = "UPDATE usuario SET reset_token = ?, token_expiration = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE id = ?";
 
@@ -177,5 +200,71 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public List<Usuario> listarTodosUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT id, nombre, email, rol FROM usuario ORDER BY nombre";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setRol(rs.getString("rol"));
+                usuarios.add(usuario);
+            }
+        }
+        return usuarios;
+    }
+
+    public void actualizarUsuario(Usuario usuario) throws SQLException {
+        String sql = "UPDATE usuario SET nombre = ?, email = ?, rol = ? WHERE id = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, usuario.getNombre());
+            ps.setString(2, usuario.getEmail());
+            ps.setString(3, usuario.getRol());
+            ps.setInt(4, usuario.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    public void eliminarUsuario(int id) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    public List<Usuario> buscarUsuarios(String busqueda) throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT id, nombre, email, rol FROM usuario " +
+                     "WHERE nombre LIKE ? OR email LIKE ? ORDER BY nombre";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + busqueda + "%");
+            ps.setString(2, "%" + busqueda + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setId(rs.getInt("id"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setRol(rs.getString("rol"));
+                    usuarios.add(usuario);
+                }
+            }
+        }
+        return usuarios;
     }
 }

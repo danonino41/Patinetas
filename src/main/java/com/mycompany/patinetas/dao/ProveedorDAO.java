@@ -122,7 +122,5 @@ public class ProveedorDAO {
             logger.log(Level.SEVERE, "Error al cerrar conexión", ex);
         }
     }
-    
-    // Métodos CRUD completos (crear, actualizar, eliminar) similares a ProductoDAO
-    // ...
+
 }

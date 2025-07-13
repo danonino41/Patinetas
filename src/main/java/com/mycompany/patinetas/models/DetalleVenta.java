@@ -1,16 +1,16 @@
 package com.mycompany.patinetas.models;
 
-import java.math.BigDecimal;
-
 public class DetalleVenta {
+
     private int id;
     private int ventaId;
+    private String nombreProducto;
     private int productoId;
     private int cantidad;
-    private BigDecimal subtotal;
+    private double subtotal;
 
     // Constructores
-    public DetalleVenta(int id, int ventaId, int productoId, int cantidad, BigDecimal subtotal) {
+    public DetalleVenta(int id, int ventaId, int productoId, int cantidad, double subtotal) {
         this.id = id;
         this.ventaId = ventaId;
         this.productoId = productoId;
@@ -21,7 +21,7 @@ public class DetalleVenta {
     public DetalleVenta() {
     }
 
-    // Getters y setter
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -45,6 +45,14 @@ public class DetalleVenta {
     public void setProductoId(int productoId) {
         this.productoId = productoId;
     }
+    
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
 
     public int getCantidad() {
         return cantidad;
@@ -54,14 +62,12 @@ public class DetalleVenta {
         this.cantidad = cantidad;
     }
 
-    public BigDecimal getSubtotal() {
+    public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
-    
 
-    
 }

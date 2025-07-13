@@ -8,7 +8,7 @@ import java.util.Properties;
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/gestionpatinetas?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
     private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "";
     
     public static Connection getConnection() throws SQLException {
         try {

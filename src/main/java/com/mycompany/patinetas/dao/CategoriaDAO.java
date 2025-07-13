@@ -57,6 +57,7 @@ public class CategoriaDAO {
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error al obtener categoria", ex);
+            return null;
         }
         return categoria;
     }
@@ -116,7 +117,5 @@ public class CategoriaDAO {
             logger.log(Level.SEVERE, "Error al cerrar conexión", ex);
         }
     }
-    
-    // Métodos CRUD completos (crear, actualizar, eliminar) similares a ProductoDAO
-    // ...
+
 }

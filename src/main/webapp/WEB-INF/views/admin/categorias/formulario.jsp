@@ -6,8 +6,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${empty categoria.id ? 'Nueva' : 'Editar'} Categoría</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
+    <jsp:include page="/WEB-INF/includes/adminNavbar.jsp"/>
     <div class="container mt-4">
         <h1>${empty categoria.id ? 'Nueva' : 'Editar'} Categoría</h1>
         

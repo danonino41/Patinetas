@@ -1,6 +1,5 @@
 package com.mycompany.patinetas.util;
 
-import javax.servlet.ServletContext;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;

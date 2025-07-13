@@ -1,28 +1,29 @@
 package com.mycompany.patinetas.models;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class Venta {
     private int id;
     private int usuarioId;
-    private LocalDateTime fecha;
-    private BigDecimal total;
-    
+    private Date fecha;
+    private double total;
+    private List<DetalleVenta> detalles;
+    private String clienteNombre;
+
     // Constructores
-    public Venta(int id, int usuarioId, LocalDateTime fecha, BigDecimal total) {
+    public Venta(int id, int usuarioId, Date fecha, double total, List<DetalleVenta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.fecha = fecha;
         this.total = total;
+        this.detalles = detalles;
     }
 
     public Venta() {
     }
 
-    // Getters y setters
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -39,20 +40,39 @@ public class Venta {
         this.usuarioId = usuarioId;
     }
 
-    public LocalDateTime getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(double total) {
         this.total = total;
     }
+
+    public List<DetalleVenta> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleVenta> detalles) {
+        this.detalles = detalles;
+    }
+
+    public String getClienteNombre() {
+        return clienteNombre;
+    }
+
+    public void setClienteNombre(String clienteNombre) {
+        this.clienteNombre = clienteNombre;
+    }
+    
+    
+
     
 }

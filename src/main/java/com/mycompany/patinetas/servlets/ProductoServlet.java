@@ -32,7 +32,7 @@ public class ProductoServlet extends HttpServlet {
             
             if (producto != null) {
                 request.setAttribute("producto", producto);
-                request.getRequestDispatcher("/WEB-INF/views/productos/detalle.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/cliente/productos/detalle.jsp").forward(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
