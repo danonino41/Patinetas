@@ -7,6 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>PatinetasShop - Carrito</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/static/imagen/logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Font Awesome CDN -->
@@ -56,7 +57,7 @@
                 <% for (ItemCarrito item : items) { %>
                     <tr>
                         <td><%= item.getProducto().getNombre() %></td>
-                        <td>$<%= String.format("%.2f", item.getProducto().getPrecio()) %></td>
+                        <td>S/ <%= String.format("%.2f", item.getProducto().getPrecio()) %></td>
                         <td>
                             <form action="${pageContext.request.contextPath}/checkout" method="post" class="d-flex gap-2">
                                 <input type="hidden" name="action" value="update">
@@ -69,7 +70,7 @@
                                 </button>
                             </form>
                         </td>
-                        <td>$<%= String.format("%.2f", item.getSubtotal()) %></td>
+                        <td>S/ <%= String.format("%.2f", item.getSubtotal()) %></td>
                         <td>
                             <form action="${pageContext.request.contextPath}/checkout" method="post">
                                 <input type="hidden" name="action" value="remove">
@@ -83,7 +84,7 @@
                 <% } %>
                 <tr>
                     <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                    <td colspan="2"><strong>$<%= String.format("%.2f", carrito.getTotal()) %></strong></td>
+                    <td colspan="2"><strong>S/ <%= String.format("%.2f", carrito.getTotal()) %></strong></td>
                 </tr>
                 </tbody>
             </table>

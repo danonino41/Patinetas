@@ -15,7 +15,9 @@ public class ProveedorDAO {
     public ProveedorDAO() {
         try {
             con = DatabaseConnection.getConnection();
+            System.out.println("[DEBUG]: Se creo la conexión a la base de datos para ProveedorDAO");
         } catch (SQLException ex) {
+            System.out.println("[DEBUG]: No creo la conexión a la base de datos para ProveedorDAO");
             logger.log(Level.SEVERE, "Error al obtener conexión", ex);
         }
     }
@@ -54,6 +56,7 @@ public class ProveedorDAO {
                     proveedor = new Proveedor();
                     proveedor.setId(rs.getInt("id"));
                     proveedor.setNombre(rs.getString("nombre"));
+                    proveedor.setDireccion(rs.getString("direccion"));
                     proveedor.setTelefono(rs.getString("telefono"));
                     proveedor.setEmail(rs.getString("email"));
                 }
@@ -65,7 +68,7 @@ public class ProveedorDAO {
     }
     
     public boolean guardar(Proveedor proveedor) {
-        String sql = proveedor.getId() == 0 ?
+        String sql = proveedor.getId() == null ?
             "INSERT INTO proveedor (nombre, direccion, telefono, email) VALUES (?, ?, ?, ?)" :
             "UPDATE proveedor SET nombre = ?, direccion = ?, telefono = ?, email = ? WHERE id = ?";
         
@@ -76,8 +79,8 @@ public class ProveedorDAO {
             ps.setString(4, proveedor.getEmail());
             
             
-            if (proveedor.getId() != 0) {
-                ps.setInt(8, proveedor.getId());
+            if (proveedor.getId() != null) {
+                ps.setInt(5, proveedor.getId());
             }
             
             int affectedRows = ps.executeUpdate();
@@ -86,7 +89,7 @@ public class ProveedorDAO {
                 return false;
             }
             
-            if (proveedor.getId() == 0) {
+            if (proveedor.getId() == null) {
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         proveedor.setId(generatedKeys.getInt(1));
@@ -113,10 +116,24 @@ public class ProveedorDAO {
         }
     }
     
+    public int contarProveedores() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM proveedor";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+            return 0;
+        }
+    }
+    
     public void cerrarConexion() {
         try {
             if (con != null && !con.isClosed()) {
                 con.close();
+                System.out.println("[DEBUG]: Se cerro la conecion a la base de datos para ProveedorDAO");
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error al cerrar conexión", ex);

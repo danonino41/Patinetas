@@ -16,7 +16,9 @@ public class ProductoDAO {
     public ProductoDAO() {
         try {
             con = DatabaseConnection.getConnection();
+            System.out.println("[DEBUG]: Se creo la conexión a la base de datos para ProductoDAO");
         } catch (SQLException ex) {
+            System.out.println("[DEBUG]: No creo la conexión a la base de datos para ProductoDAO");
             logger.log(Level.SEVERE, "Error al obtener conexión", ex);
         }
     }
@@ -224,18 +226,7 @@ public class ProductoDAO {
             logger.log(Level.SEVERE, "Error al obtener los productos", ex);
             return null;
         }
-
         return productos;
-    }
-    
-    public void cerrarConexion() {
-        try {
-            if (con != null && !con.isClosed()) {
-                con.close();
-            }
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "Error al cerrar conexión", ex);
-        }
     }
     
     public List<Producto> filtrarProductos(Integer categoriaId, Double precioMin, Double precioMax, String nombre) throws SQLException {
@@ -311,5 +302,29 @@ public class ProductoDAO {
             }
         }
         return categorias;
+    }
+    
+    public int contarProductos() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM producto";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+            return 0;
+        }
+    }
+    
+    public void cerrarConexion() {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.close();
+                System.out.println("[DEBUG]: Se cerro la conecion a la base de datos para ProductoDAO");
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Error al cerrar conexión", ex);
+        }
     }
 }

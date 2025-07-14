@@ -60,7 +60,49 @@ public class PerfilServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
 
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Usuario existente;
+        
+            existente = usuarioDAO.obtenerPorId(id);
+
+            String nombre = request.getParameter("nombre");
+            String email = request.getParameter("email");
+            String contraseña = request.getParameter("contraseña");
+
+            Usuario usuario = new Usuario();
+            usuario.setId(id);
+            usuario.setNombre(nombre);
+            usuario.setEmail(email);
+            usuario.setRol(existente.getRol());
+
+            // Validaciones de campos
+            if (nombre.isEmpty() || email.isEmpty()) {
+                request.getSession().setAttribute("mensajeError", "Nombre e email son obligatorios");
+                response.sendRedirect(request.getContextPath() + "/perfil");
+                return;
+            }
+
+            // Validar si el email ya existe (excluyendo al usuario actual)
+            if (usuarioDAO.existeEmailForUpdate(email, id)) {
+                request.getSession().setAttribute("mensajeError", "El email ya está registrado");
+                response.sendRedirect(request.getContextPath() + "/perfil");
+                return;
+            }
+
+            try {
+                usuarioDAO.actualizarUsuario(usuario);
+                request.getSession().setAttribute("mensajeExito", "Usuario actualizado correctamente");
+                response.sendRedirect(request.getContextPath() + "/perfil");
+            } catch (SQLException e) {
+                request.getSession().setAttribute("mensajeError", "Error al actualizar el usuario");
+                e.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PerfilServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
@@ -72,6 +114,5 @@ public class PerfilServlet extends HttpServlet {
             ventaDAO.cerrarConexion();
         }
     }
-
 
 }

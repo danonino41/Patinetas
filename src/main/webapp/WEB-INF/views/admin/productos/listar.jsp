@@ -5,77 +5,89 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Gestión de Productos</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/static/imagen/logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
     <jsp:include page="/WEB-INF/includes/adminNavbar.jsp"/>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Gestión de Productos</h1>
-            <a href="${pageContext.request.contextPath}/admin/productos/nuevo" 
-               class="btn btn-success">
-                <i class="bi bi-plus-lg"></i> Nuevo Producto
-            </a>
-        </div>
-        
-        <c:if test="${not empty success}">
-            <div class="alert alert-success alert-dismissible fade show">
-                ${success}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            <c:remove var="success" scope="session"/>
-        </c:if>
-        
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger alert-dismissible fade show">
-                ${error}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            <c:remove var="error" scope="session"/>
-        </c:if>
-        
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="producto" items="${productos}">
-                        <tr>
-                            <td>${producto.id}</td>
-                            <td>
-                                <img src="${pageContext.request.contextPath}/${producto.imagen}" 
-                                     alt="${producto.nombre}" 
-                                     style="width: 50px; height: 50px; object-fit: cover;">
-                            </td>
-                            <td>${producto.nombre}</td>
-                            <td>$${producto.precio}</td>
-                            <td>${producto.stock}</td>
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <a href="${pageContext.request.contextPath}/admin/productos/editar?id=${producto.id}" 
-                                       class="btn btn-sm btn-primary">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <a href="${pageContext.request.contextPath}/admin/productos/eliminar?id=${producto.id}" 
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+           
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <main class="col-md-9 m-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2>
+                        <i class="bi bi-box2"></i> Gestión de Productos
+                    </h2>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a href="${pageContext.request.contextPath}/admin/productos/nuevo" class="btn btn-sm btn-primary">
+                                <i class="bi bi-plus-circle"></i> Nuevo Producto
+                        </a>
+                        <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-sm btn-outline-secondary ms-3">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+
+                <c:if test="${not empty success}">
+                    <div class="alert alert-success alert-dismissible fade show">
+                        ${success}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <c:remove var="success" scope="session"/>
+                </c:if>
+
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        ${error}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <c:remove var="error" scope="session"/>
+                </c:if>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="producto" items="${productos}">
+                                <tr>
+                                    <td>${producto.id}</td>
+                                    <td>
+                                        <img src="${pageContext.request.contextPath}/${producto.imagen}" 
+                                             alt="${producto.nombre}" 
+                                             style="width: 50px; height: 50px; object-fit: cover;">
+                                    </td>
+                                    <td>${producto.nombre}</td>
+                                    <td>S/ ${producto.precio}</td>
+                                    <td>${producto.stock}</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="${pageContext.request.contextPath}/admin/productos/editar?id=${producto.id}" 
+                                               class="btn btn-sm btn-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/admin/productos/eliminar?id=${producto.id}" 
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
         </div>
     </div>
     

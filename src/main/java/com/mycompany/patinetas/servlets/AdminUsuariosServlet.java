@@ -86,7 +86,7 @@ public class AdminUsuariosServlet extends HttpServlet {
     
     private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
-        
+
         Usuario usuario = new Usuario();
         request.setAttribute("usuario", usuario);
         request.getRequestDispatcher("/WEB-INF/views/admin/usuarios/formulario.jsp").forward(request, response);
@@ -107,24 +107,47 @@ public class AdminUsuariosServlet extends HttpServlet {
         
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
+        String contraseña = request.getParameter("contraseña");
         String rol = request.getParameter("rol");
-        
-        if (usuarioDAO.existeEmail(email)) {
-            request.getSession().setAttribute("mensajeError", "El email ya existe");
-            request.getRequestDispatcher("/WEB-INF/views/admin/usuarios/formulario.jsp").forward(request, response);
+
+        // Validaciones de campos
+        if (nombre.isEmpty() || email.isEmpty() || rol.isEmpty()) {
+            request.getSession().setAttribute("mensajeError", "Nombre, email y rol son obligatorios");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=nuevo");
             return;
+        }
+        
+        // Validar si existe el email en la base de datos
+        if (usuarioDAO.existeEmail(email)) {
+            request.getSession().setAttribute("mensajeError", "El email ya está registrado");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=nuevo");
+            return;
+        }
+
+        // Validación de contraseña si se proporciona
+        if (contraseña != null && !contraseña.trim().isEmpty()) {
+            if (contraseña.length() < 8) {
+                request.getSession().setAttribute("mensajeError", "La contraseña debe tener al menos 8 caracteres");
+                response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=nuevo");
+                return;
+            }
         }
         
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
-        usuario.setContraseña("Contra123@"); // Contraseña por default "Contra123@"
+        usuario.setContraseña(contraseña);
         usuario.setRol(rol);
         
-        usuarioDAO.registrarUsuario(usuario);
-        
-        request.getSession().setAttribute("mensajeExito", "Usuario actualizado correctamente");
-        response.sendRedirect(request.getContextPath() + "/admin/usuarios");
+        try {
+            usuarioDAO.registrarUsuario(usuario);
+            request.getSession().setAttribute("mensajeExito", "Usuario registrado correctamente");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios");
+        } catch (SQLException e) {
+            request.getSession().setAttribute("mensajeError", "Error al registrar el usuario");
+            e.printStackTrace();
+        }
+  
     }
     
     private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response) 
@@ -133,6 +156,7 @@ public class AdminUsuariosServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
+        String contraseña = request.getParameter("contraseña");
         String rol = request.getParameter("rol");
         
         Usuario usuario = new Usuario();
@@ -141,10 +165,46 @@ public class AdminUsuariosServlet extends HttpServlet {
         usuario.setEmail(email);
         usuario.setRol(rol);
         
-        usuarioDAO.actualizarUsuario(usuario);
+        // Obtener el usuario actual para comparar emails
+        Usuario usuarioActual = usuarioDAO.obtenerPorId(id);
         
-        request.getSession().setAttribute("mensajeExito", "Usuario actualizado correctamente");
-        response.sendRedirect(request.getContextPath() + "/admin/usuarios");
+        // Validaciones de campos
+        if (nombre.isEmpty() || email.isEmpty() || rol.isEmpty()) {
+            request.getSession().setAttribute("mensajeError", "Nombre, email y rol son obligatorios");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=editar&id=" + id);
+            return;
+        }
+        
+        // Validar si el email ya existe (excluyendo al usuario actual)
+        if (usuarioDAO.existeEmailForUpdate(email, id)) {
+            request.getSession().setAttribute("mensajeError", "El email ya está registrado");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=editar&id=" + id);
+            return;
+        }
+
+        // Validación de contraseña si se proporciona
+        if (contraseña != null && !contraseña.trim().isEmpty()) {
+            if (contraseña.length() < 8) {
+                request.getSession().setAttribute("mensajeError", "La contraseña debe tener al menos 8 caracteres");
+                response.sendRedirect(request.getContextPath() + "/admin/usuarios?accion=editar&id=" + id);
+                return;
+            }
+        }
+
+        // Solo actualizar contraseña si se proporcionó
+        if (contraseña != null && !contraseña.trim().isEmpty()) {
+            usuario.setContraseña(contraseña);
+        }
+        
+        try {
+            usuarioDAO.actualizarUsuario(usuario);
+            request.getSession().setAttribute("mensajeExito", "Usuario actualizado correctamente");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios");
+        } catch (SQLException e) {
+            request.getSession().setAttribute("mensajeError", "Error al actualizar el usuario");
+            e.printStackTrace();
+        }
+
     }
     
     private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response) 

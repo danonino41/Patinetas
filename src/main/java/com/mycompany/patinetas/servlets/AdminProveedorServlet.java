@@ -33,14 +33,24 @@ public class AdminProveedorServlet extends HttpServlet {
             request.setAttribute("proveedor", new Proveedor());
             request.getRequestDispatcher("/WEB-INF/views/admin/proveedores/formulario.jsp").forward(request, response);
         } else if (action.equals("/editar")) {
-            // Editar proveedor
+            // Mostrar formulario para editar proveedor
             int id = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("proveedor", proveedorDAO.obtenerPorId(id));
-            request.getRequestDispatcher("/WEB-INF/views/admin/proveedores/formulario.jsp").forward(request, response);
+            Proveedor proveedor = proveedorDAO.obtenerPorId(id);
+            
+            if (proveedor != null) {
+                request.setAttribute("proveedor", proveedor);
+                request.getRequestDispatcher("/WEB-INF/views/admin/proveedores/formulario.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
         } else if (action.equals("/eliminar")) {
             // Eliminar proveedor
             int id = Integer.parseInt(request.getParameter("id"));
-            proveedorDAO.eliminar(id);
+            if (proveedorDAO.eliminar(id)) {
+                request.getSession().setAttribute("success", "Proveedor eliminado correctamente");
+            } else {
+                request.getSession().setAttribute("error", "No se pudo eliminar el proveedor");
+            }
             response.sendRedirect(request.getContextPath() + "/admin/proveedores");
         }
 
@@ -50,28 +60,45 @@ public class AdminProveedorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Proveedor proveedor = new Proveedor();
-        proveedor.setNombre(request.getParameter("nombre"));
-        proveedor.setDireccion(request.getParameter("direccion"));
-        proveedor.setTelefono(request.getParameter("telefono"));
-        proveedor.setEmail(request.getParameter("email"));
+        String action = request.getPathInfo();
         
-        // Obtener parámetros del formulario
-        String idParam = request.getParameter("id");
-        if (idParam != null && !idParam.isEmpty()) {
-            proveedor.setId(Integer.parseInt(idParam));
+        if (action == null || action.equals("/")) {
+            Proveedor proveedor = new Proveedor();
+            
+            // Obtener parámetros del formulario
+            String idParam = request.getParameter("id");
+            if (idParam != null && !idParam.isEmpty()) {
+                proveedor.setId(Integer.parseInt(idParam));
+            }
+            
+            String nombre = request.getParameter("nombre");
+            String direccion = request.getParameter("direccion");
+            String telefono = request.getParameter("telefono");
+            String email = request.getParameter("email");
+            
+            // Validaciones de campos
+            if (nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty() || email.isEmpty()) {
+                request.getSession().setAttribute("mensajeError", "Nombre, dirección, teléfono y correo son obligatorios");
+                response.sendRedirect(request.getContextPath() + "/admin/proveedores/nuevo");
+                return;
+            }
+            
+            proveedor.setNombre(nombre);
+            proveedor.setDireccion(direccion);
+            proveedor.setTelefono(telefono);
+            proveedor.setEmail(email);
+            
+            // Guardar el proveedor
+            if (proveedorDAO.guardar(proveedor)) {
+                request.getSession().setAttribute("success", 
+                    proveedor.getId() == null ? "Proveedor creado correctamente" : "Proveedor actualizado correctamente");
+            } else {
+                request.getSession().setAttribute("error", 
+                    "No se pudo guardar el proveedor");
+            }
+
+            response.sendRedirect(request.getContextPath() + "/admin/proveedores");
         }
-        
-        // Guardar el producto
-        if (proveedorDAO.guardar(proveedor)) {
-            request.getSession().setAttribute("success", 
-                proveedor.getId() == 0 ? "Proveedor creado correctamente" : "Proveedor actualizado correctamente");
-        } else {
-            request.getSession().setAttribute("error", 
-                "No se pudo guardar el proveedor");
-        }
-        
-        response.sendRedirect(request.getContextPath() + "/admin/proveedores");
 
     }
     

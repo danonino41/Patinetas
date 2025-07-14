@@ -15,7 +15,9 @@ public class CategoriaDAO {
     public CategoriaDAO() {
         try {
             con = DatabaseConnection.getConnection();
+            System.out.println("[DEBUG]: Se creo la conexión a la base de datos para CategoriaDAO");
         } catch (SQLException ex) {
+            System.out.println("[DEBUG]: No creo la conexión a la base de datos para CategoriaDAO");
             logger.log(Level.SEVERE, "Error al obtener conexión", ex);
         }
     }
@@ -63,16 +65,16 @@ public class CategoriaDAO {
     }
     
     public boolean guardar(Categoria categoria) {
-        String sql = categoria.getId() == 0 ?
+        String sql = categoria.getId() == null ?
             "INSERT INTO categoria (nombre, descripcion) VALUES (?, ?)" :
-            "UPDATE producto SET nombre = ?, descripcion = ? WHERE id = ?";
+            "UPDATE categoria SET nombre = ?, descripcion = ? WHERE id = ?";
         
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, categoria.getNombre());
             ps.setString(2, categoria.getDescripcion());
             
-            if (categoria.getId() != 0) {
-                ps.setInt(8, categoria.getId());
+            if (categoria.getId() != null) {
+                ps.setInt(3, categoria.getId());
             }
             
             int affectedRows = ps.executeUpdate();
@@ -81,7 +83,7 @@ public class CategoriaDAO {
                 return false;
             }
             
-            if (categoria.getId() == 0) {
+            if (categoria.getId() == null) {
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         categoria.setId(generatedKeys.getInt(1));
@@ -91,7 +93,7 @@ public class CategoriaDAO {
             
             return true;
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "Error al guardar producto", ex);
+            logger.log(Level.SEVERE, "Error al guardar categoria", ex);
             return false;
         }
     }
@@ -108,10 +110,24 @@ public class CategoriaDAO {
         }
     }
     
+    public int contarCategorias() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM categoria";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+            return 0;
+        }
+    }
+    
     public void cerrarConexion() {
         try {
             if (con != null && !con.isClosed()) {
                 con.close();
+                System.out.println("[DEBUG]: Se cerro la conecion a la base de datos para CategoriaDAO");
             }
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Error al cerrar conexión", ex);

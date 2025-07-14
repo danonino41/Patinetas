@@ -35,12 +35,23 @@ public class AdminCategoriaServlet extends HttpServlet {
         } else if (action.equals("/editar")) {
             // Editar categoría
             int id = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("categoria", categoriaDAO.obtenerPorId(id));
-            request.getRequestDispatcher("/WEB-INF/views/admin/categorias/formulario.jsp").forward(request, response);
+            Categoria categoria = categoriaDAO.obtenerPorId(id);
+            
+            if (categoria != null) {
+                request.setAttribute("categoria", categoria);
+                request.getRequestDispatcher("/WEB-INF/views/admin/categorias/formulario.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
         } else if (action.equals("/eliminar")) {
             // Eliminar categoría
             int id = Integer.parseInt(request.getParameter("id"));
-            categoriaDAO.eliminar(id);
+            if (categoriaDAO.eliminar(id)) {
+                request.getSession().setAttribute("success", "Categoría eliminado correctamente");
+            } else {
+                request.getSession().setAttribute("error", "No se pudo eliminar la categoría");
+            }
+            
             response.sendRedirect(request.getContextPath() + "/admin/categorias");
         }
 
@@ -50,26 +61,42 @@ public class AdminCategoriaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Categoria categoria = new Categoria();
-        categoria.setNombre(request.getParameter("nombre"));
-        categoria.setDescripcion(request.getParameter("descripcion"));
+        String action = request.getPathInfo();
         
-        // Obtener parámetros del formulario
-        String idParam = request.getParameter("id");
-        if (idParam != null && !idParam.isEmpty()) {
-            categoria.setId(Integer.parseInt(idParam));
+        if (action == null || action.equals("/")) {
+                    
+            Categoria categoria = new Categoria();
+            
+            // Obtener parámetros del formulario
+            String idParam = request.getParameter("id");
+            if (idParam != null && !idParam.isEmpty()) {
+                categoria.setId(Integer.parseInt(idParam));
+            }
+            
+            String nombre = request.getParameter("nombre");
+            String descripcion = request.getParameter("descripcion");
+            
+            // Validaciones de campos
+            if (nombre.isEmpty() || descripcion.isEmpty()) {
+                request.getSession().setAttribute("mensajeError", "Nombre y descripción son obligatorios");
+                response.sendRedirect(request.getContextPath() + "/admin/categorias/nuevo");
+                return;
+            }
+            
+            categoria.setNombre(nombre);
+            categoria.setDescripcion(descripcion);
+
+            // Guardar la categoria
+            if (categoriaDAO.guardar(categoria)) {
+                request.getSession().setAttribute("success", 
+                    categoria.getId() == null ? "Categoría creado correctamente" : "Categoría actualizado correctamente");
+            } else {
+                request.getSession().setAttribute("error", 
+                    "No se pudo guardar la categoría");
+            }
+
+            response.sendRedirect(request.getContextPath() + "/admin/categorias");
         }
-        
-        // Guardar el producto
-        if (categoriaDAO.guardar(categoria)) {
-            request.getSession().setAttribute("success", 
-                categoria.getId() == 0 ? "Categoria creado correctamente" : "Categoria actualizado correctamente");
-        } else {
-            request.getSession().setAttribute("error", 
-                "No se pudo guardar la categoria");
-        }
-        
-        response.sendRedirect(request.getContextPath() + "/admin/categorias");
 
     }
     

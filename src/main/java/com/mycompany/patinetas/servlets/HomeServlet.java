@@ -29,18 +29,9 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("categorias", categoriaDAO.listarTodas());
 
         // Obtener productos destacados (por ejemplo, los 6 más recientes)
-        request.setAttribute("productosDestacados", productoDAO.listarDestacados(6));
-
-
+        request.setAttribute("productosDestacados", productoDAO.listarDestacados(8));
 
         request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
-
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
     }
     

@@ -1,10 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${producto.nombre} - PatinetasShop</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/static/imagen/logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Font Awesome CDN -->
@@ -42,8 +44,8 @@
         <div class="col-md-6">
             <h1 class="fw-bold">${producto.nombre}</h1>
             <p class="text-muted mb-1">Código: <strong>${producto.id}</strong></p>
-            <h4 class="text-primary mb-3">$${producto.precio}</h4>
-            <p class="lead">${producto.descripcion}</p>
+            <h4 class="text-primary mb-3">S/ ${producto.precio}</h4>
+            <p class="lead">${fn:replace(fn:escapeXml(producto.descripcion), '\\n', '<br>')}</p>
 
             <div class="mb-3">
                 <span class="fw-semibold">Disponibilidad:</span>

@@ -4,8 +4,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+    html,
     body {
         font-family: 'Roboto', sans-serif;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        flex: 1;
     }
 
     .navbar {
@@ -112,21 +122,49 @@
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%288, 8, 8, 0.7%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
         }
     }
-
-    html,
-    body {
-        height: 100%;
-        margin: 0;
+    
+    /* Estilos para la barra de búsqueda */
+    .navbar .input-group {
+        max-width: 300px;
+    }
+    .navbar .form-control {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+    .navbar .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    .navbar .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        box-shadow: none;
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    .navbar .btn-outline-light {
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+    .navbar .btn-outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
-    body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+    /* Ajustes para móviles */
+    @media (max-width: 991px) {
+        .navbar .input-group {
+            margin: 10px 0;
+            max-width: 100%;
+        }
+        .navbar .form-control {
+            font-size: 1rem;
+            height: auto;
+            padding: 0.5rem;
+        }
     }
-
-    .main-content {
-        flex: 1;
+    
+    .navbar-toggler-icon {
+        background-color: transparent;
+        color: red;
     }
 </style>
     
@@ -140,6 +178,16 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="d-flex me-3" action="${pageContext.request.contextPath}/busqueda" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="nombre" placeholder="Buscar productos..." 
+                           aria-label="Buscar" aria-describedby="button-search" style="min-width: 200px;">
+                    <button class="btn btn-outline-light" type="submit" id="button-search">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/about">NOSOTROS</a>
@@ -238,7 +286,7 @@
         <div class="border-top pt-3" id="cartSummary" style="display: none;">
             <div class="d-flex justify-content-between fw-bold">
                 <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
+                <span id="cartTotal">S/ 0.00</span>
             </div>
             <a href="${pageContext.request.contextPath}/checkout" class="btn btn-primary w-100 mt-3" id="checkoutBtn">
                 Finalizar compra
@@ -269,8 +317,7 @@ function updateCartUI(cartData) {
     const cartCounter = document.getElementById('cartCounter');
     const emptyCartMessage = document.getElementById('emptyCartMessage');
     const cartSummary = document.getElementById('cartSummary');
-    
-    console.log(cartData);
+
     
     if (cartData.items && cartData.items.length > 0) {
         // Actualizar contador
@@ -318,7 +365,7 @@ function updateCartUI(cartData) {
         cartItemsContainer.innerHTML = itemsHTML;
         
         // Actualizar resumen
-        document.getElementById('cartTotal').textContent = `\$ \${cartData.total.toFixed(2)}`;
+        document.getElementById('cartTotal').textContent = `\S/ \${cartData.total.toFixed(2)}`;
         
         // Mostrar resumen
         cartSummary.style.display = 'block';
@@ -350,6 +397,7 @@ function updateCartItem(productId, newQuantity) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Carrito recibido:', data);
         updateCartUI(data);
     })
     .catch(error => {
@@ -368,6 +416,7 @@ function removeFromCart(productId) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Carrito recibido:', data);
         updateCartUI(data);
     })
     .catch(error => {

@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>PatinetasShop - Perfil</title>
+        <link rel="icon" href="${pageContext.request.contextPath}/static/imagen/logo.png" type="image/x-icon">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
         <!-- Font Awesome CDN -->
@@ -24,6 +25,22 @@
 
         <div class="container">
             <h2>Mi Perfil</h2>
+            
+            <c:if test="${not empty mensajeExito}">
+                <div class="alert alert-success alert-dismissible fade show">
+                    ${mensajeExito}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <c:remove var="mensajeExito" scope="session"/>
+            </c:if>
+
+            <c:if test="${not empty mensajeError}">
+                <div class="alert alert-danger alert-dismissible fade show">
+                    ${mensajeError}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <c:remove var="mensajeError" scope="session"/>
+            </c:if>
 
             <div class="row">
                 <div class="col-md-6">
@@ -32,18 +49,22 @@
                             <h4>Información Personal</h4>
                         </div>
                         <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Nombre:</label>
-                                <p class="form-control-static"><%= usuario.getNombre() %></p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email:</label>
-                                <p class="form-control-static"><%= usuario.getEmail() %></p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rol:</label>
-                                <p class="form-control-static"><%= usuario.getRol() %></p>
-                            </div>
+                            <form action="${pageContext.request.contextPath}/perfil" method="post">
+                                <input type="hidden" name="id" value="${usuario.id}">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" 
+                                           value="${usuario.nombre}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           value="${usuario.email}" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save"></i> Actualizar datos
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

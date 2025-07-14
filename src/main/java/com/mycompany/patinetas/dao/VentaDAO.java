@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +24,9 @@ public class VentaDAO {
     public VentaDAO() {
         try {
             con = DatabaseConnection.getConnection();
+            System.out.println("[DEBUG]: Se creo la conexión a la base de datos para VentaDAO");
         } catch (SQLException ex) {
+            System.out.println("[DEBUG]: No creo la conexión a la base de datos para VentaDAO");
             logger.log(Level.SEVERE, "Error al obtener conexión", ex);
         }
     }
@@ -148,17 +149,6 @@ public class VentaDAO {
             }
         }
         return ventas;
-    }
-    
-    // Cerrar conexión
-    public void cerrarConexion() {
-        try {
-            if (con != null && !con.isClosed()) {
-                con.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public List<Venta> obtenerReporteVentas(Date fechaInicio, Date fechaFin, String ordenarPor) throws SQLException {
@@ -333,5 +323,30 @@ public class VentaDAO {
         }
 
         return ventasPorDia;
+    }
+    
+    public int contarVentas() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM venta";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+            return 0;
+        }
+    }
+    
+    // Cerrar conexión
+    public void cerrarConexion() {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.close();
+                System.out.println("[DEBUG]: Se cerro la conecion a la base de datos para VentaDAO");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

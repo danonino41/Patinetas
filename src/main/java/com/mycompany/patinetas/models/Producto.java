@@ -3,7 +3,7 @@ package com.mycompany.patinetas.models;
 import java.math.BigDecimal;
 
 public class Producto {
-    private int id;
+    private Integer id;
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
@@ -28,11 +28,11 @@ public class Producto {
     }
 
     // Getters y setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

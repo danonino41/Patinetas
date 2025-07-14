@@ -1,14 +1,14 @@
 package com.mycompany.patinetas.models;
 
 public class Usuario {
-    private int id;
+    private Integer id;
     private String nombre;
     private String email;
     private String contraseña;
     private String rol;
 
     // Constructores
-    public Usuario(int id, String nombre, String email, String contraseña, String rol) {
+    public Usuario(Integer id, String nombre, String email, String contraseña, String rol) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
@@ -27,10 +27,10 @@ public class Usuario {
     }
     
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNombre() {

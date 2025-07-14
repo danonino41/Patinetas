@@ -5,6 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>PatinetasShop - Inicio</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/static/imagen/logo.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Font Awesome CDN -->
@@ -110,7 +111,7 @@
                     <div class="card-body">
                         <h5 class="card-title">${producto.nombre}</h5>
                         <p class="card-text text-truncate">${producto.descripcion}</p>
-                        <h5 class="text-primary">$${producto.precio}</h5>
+                        <h5 class="text-primary">S/ ${producto.precio}</h5>
                     </div>
                     <div class="card-footer bg-white border-0">
                         <a href="${pageContext.request.contextPath}/productos?id=${producto.id}"

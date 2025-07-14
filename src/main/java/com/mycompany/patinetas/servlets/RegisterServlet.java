@@ -8,6 +8,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
@@ -66,12 +69,16 @@ public class RegisterServlet extends HttpServlet {
         // Crear nuevo usuario con rol de usuario por defecto
         Usuario nuevoUsuario = new Usuario(nombre, email, contraseña, "usuario");
         
-        if (usuarioDAO.registrarUsuario(nuevoUsuario)) {
-            request.setAttribute("success", "Usuario registrado exitosamente");
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Error al registrar el usuario");
-            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+        try {
+            if (usuarioDAO.registrarUsuario(nuevoUsuario)) {
+                request.setAttribute("success", "Usuario registrado exitosamente");
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            } else {
+                request.setAttribute("error", "Error al registrar el usuario");
+                request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

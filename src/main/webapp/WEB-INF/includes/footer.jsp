@@ -61,8 +61,9 @@
                 <h5>Enlaces Rapidos</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-white">Inicio</a></li>
-                    <li><a href="#" class="text-white">Productos</a></li>
-                    <li><a href="#" class="text-white">Contacto</a></li>
+                    <li><a href="${pageContext.request.contextPath}/busqueda" class="text-white">Productos</a></li>
+                    <li><a href="${pageContext.request.contextPath}/contact" class="text-white">Contacto</a></li>
+                    <li><a href="${pageContext.request.contextPath}/about" class="text-white">Nosotros</a></li>
                 </ul>
             </div>
             <div class="col-md-4">

@@ -21,15 +21,15 @@ public class UsuarioDAO {
     public UsuarioDAO() {
         try {
             con = DatabaseConnection.getConnection();
-            System.out.println("[DEBUG]: Se creo la conexión a la base de datos");
+            System.out.println("[DEBUG]: Se creo la conexión a la base de datos para UsuarioDAO");
         } catch (SQLException ex) {
-            System.out.println("[DEBUG]: No se establecion conexión a la base de datos.");
+            System.out.println("[DEBUG]: No se establecion conexión a la base de datos para UsuarioDAO.");
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     // Registrar nuevo usuario
-    public boolean registrarUsuario(Usuario usuario) {
+    public boolean registrarUsuario(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuario (nombre, email, contraseña, rol) VALUES (?, ?, ?, ?)";
         
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -74,11 +74,10 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return usuario;
     }
     
-        // Obtener usuario por email y contraseña
+    // Obtener usuario por email y contraseña
     public Usuario obtenerPorEmail(String email) {
         String sql = "SELECT * FROM usuario WHERE email = ? LIMIT 1";
         Usuario usuario = null;
@@ -99,7 +98,6 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return usuario;
     }
     
@@ -110,6 +108,22 @@ public class UsuarioDAO {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
             
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean existeEmailForUpdate(String email, int excludeUserId) {
+        String sql = "SELECT id FROM usuario WHERE email = ? AND id != ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setInt(2, excludeUserId);
+
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
@@ -191,17 +205,6 @@ public class UsuarioDAO {
         }
     }
     
-    // Cerrar conexión
-    public void cerrarConexion() {
-        try {
-            if (con != null && !con.isClosed()) {
-                con.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public List<Usuario> listarTodosUsuarios() throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT id, nombre, email, rol FROM usuario ORDER BY nombre";
@@ -222,15 +225,33 @@ public class UsuarioDAO {
     }
 
     public void actualizarUsuario(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nombre = ?, email = ?, rol = ? WHERE id = ?";
+        if (usuario.getContraseña() != null && !usuario.getContraseña().isEmpty()) {
+            // Actualizar con contraseña
+            String sql = "UPDATE usuario SET nombre = ?, email = ?, rol = ?, contraseña = ? WHERE id = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getEmail());
-            ps.setString(3, usuario.getRol());
-            ps.setInt(4, usuario.getId());
-            ps.executeUpdate();
+                // Generar hash de la contraseña
+                String hashedPassword = PasswordUtil.hashPassword(usuario.getContraseña());
+                ps.setString(1, usuario.getNombre());
+                ps.setString(2, usuario.getEmail());
+                ps.setString(3, usuario.getRol());
+                ps.setString(4, hashedPassword); // Hashear la contraseña
+                ps.setInt(5, usuario.getId());
+                ps.executeUpdate();
+            }
+        } else {
+            System.out.println("NI CONTRA");
+            // Actualizar sin contraseña
+            String sql = "UPDATE usuario SET nombre = ?, email = ?, rol = ? WHERE id = ?";
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, usuario.getNombre());
+                ps.setString(2, usuario.getEmail());
+                ps.setString(3, usuario.getRol());
+                ps.setInt(4, usuario.getId());
+                ps.executeUpdate();
+            }
         }
     }
 
@@ -266,5 +287,30 @@ public class UsuarioDAO {
             }
         }
         return usuarios;
+    }
+    
+    public int contarUsuarios() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM usuario";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+            return 0;
+        }
+    }
+    
+    // Cerrar conexión
+    public void cerrarConexion() {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.close();
+                System.out.println("[DEBUG]: Se cerro la conecion a la base de datos para UsuarioDAO");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

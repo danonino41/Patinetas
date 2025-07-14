@@ -1,7 +1,7 @@
 package com.mycompany.patinetas.models;
 
 public class Categoria {
-    private int id;
+    private Integer id;
     private String nombre;
     private String descripcion;
 
@@ -11,7 +11,7 @@ public class Categoria {
         this.descripcion = descripcion;
     }
     
-    public Categoria(int id, String nombre) {
+    public Categoria(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
@@ -21,11 +21,11 @@ public class Categoria {
 
     // Getters y setters
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

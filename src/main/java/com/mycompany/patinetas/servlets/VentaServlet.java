@@ -73,7 +73,7 @@ public class VentaServlet extends HttpServlet {
         } catch (SQLException ex) {
             session.setAttribute("mensajeError", "Error al procesar la venta. Intente nuevamente.");
             response.sendRedirect(request.getContextPath() + "/checkout");
-            // Log the error properly in production
+            // Log error en produccion
             ex.printStackTrace();
         }
     }
